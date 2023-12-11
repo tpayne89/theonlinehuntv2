@@ -18,15 +18,19 @@ let currentQuestion = 0;
 
 function showQuestion() {
   const questionElement = document.getElementById("question");
-  questionElement.innerHTML = questions[currentQuestion].question;
+  console.log("questions:", questions); // Log questions array
+  questionElement.innerHTML = questions[currentQuestion]?.question || "Game Over!";
 }
 
 function checkAnswer() {
   const answerElement = document.getElementById("answer");
   const userAnswer = answerElement.value;
-  const correctAnswer = questions[currentQuestion].answer;
+  const correctAnswer = questions[currentQuestion]?.answer;
 
-  if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+  console.log("User Answer:", userAnswer);
+  console.log("Correct Answer:", correctAnswer);
+
+  if (userAnswer && correctAnswer && userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
     alert("Correct answer!");
     currentQuestion++;
 
@@ -45,6 +49,8 @@ function checkAnswer() {
 // Retrieve questions from the Firebase Realtime Database
 database.ref("questions").on("value", function(snapshot) {
   const data = snapshot.val();
+  console.log("Firebase Data:", data); // Log Firebase data
+
   if (data) {
     questions = data;
     // Show the first question when the page and data are loaded
